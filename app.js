@@ -8,7 +8,6 @@ let app = express()
 app.use(bodyParser.json({ limit: '10mb', extended: true }))
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }))
 app.use(cors({
-	exposedHeaders: 'Content-Range',
 	origin: '*',
 	methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 	preflightContinue: false,
@@ -19,33 +18,31 @@ var browser = null
 
 const launchBrowser = () => {
 
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async (resolve) => {
 
         if(browser === null){
             browser = await puppeteer.launch({headless: true, dumpio: true}) // don't need dumpio normally, useful for debugging.
         }
         resolve()
     })
-
-
 }
 
 app.post('/generate', async (req, res) =>{
 
     await launchBrowser()
 
-    const {html} = req.body
+    const { html } = req.body
     const page = await browser.newPage();
     await page.setContent(html);
 
-    const pdf = await page.pdf()
+    const pdf = await page.pdf();
 
-    fs.writeFileSync('./test.pdf', pdf)
+    fs.writeFileSync('./test.pdf', pdf);
     res.contentType("application/pdf");
 
     res.send(pdf);
 
-    page.close()
+    page.close();
 })
 
 app.listen(3000, () => {
