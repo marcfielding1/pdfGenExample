@@ -22,7 +22,7 @@ const launchBrowser = () => {
     return new Promise(async (resolve, reject) => {
 
         if(browser === null){
-            browser = await puppeteer.launch({headless: true, dumpio: true})
+            browser = await puppeteer.launch({headless: true, dumpio: true}) // don't need dumpio normally, useful for debugging.
         }
         resolve()
     })
