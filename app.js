@@ -44,6 +44,8 @@ app.post('/generate', async (req, res) =>{
     res.contentType("application/pdf");
 
     res.send(pdf);
+
+    page.close()
 })
 
 app.listen(3000, () => {
